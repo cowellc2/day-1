@@ -1,0 +1,46 @@
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (Hero.isHittingTile(CollisionDirection.Bottom)) {
+        Hero.vy += -200
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
+    game.gameOver(true)
+    game.setGameOverEffect(true, effects.confetti)
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardWater, function (sprite, location) {
+    info.changeLifeBy(-1)
+    tiles.placeOnTile(Hero, tiles.getTileLocation(0, 1))
+})
+let Hero: Sprite = null
+info.setLife(3)
+tiles.setCurrentTilemap(tilemap`level1`)
+Hero = sprites.create(img`
+    ........................
+    ........................
+    ...........cc...........
+    ...........cccc.........
+    .......cc...ccccccc.....
+    .......cccccc555555cc...
+    ........ccb5555555555c..
+    .....cc..b555555555555c.
+    .....cccb555555ff155555c
+    .....ccb55555555ff55d55c
+    ......b5555555555555555c
+    ...c..b555d55555bb13bbc.
+    ...cccd55ddddd55bb3335c.
+    ....cbdddddddddd55b335c.
+    ..cccdddddb55bdddd5555c.
+    ..cccdddddb555bbbbcccc..
+    ...ccddddddb5555cbcdc...
+    ccccbdddddddcb55cbcc....
+    cddddddddd55dbccbbc.....
+    cbdddddddd555dbbbcc.....
+    .ccbdddbbdd555bbcdbcc...
+    ...cccbbbbdd55ccdddbc...
+    ......cccbdddbccccccc...
+    ........cdd555dc........
+    `, SpriteKind.Player)
+controller.moveSprite(Hero, 100, 0)
+tiles.placeOnTile(Hero, tiles.getTileLocation(0, 1))
+Hero.ay = 600
+scene.cameraFollowSprite(Hero)
